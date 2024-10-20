@@ -1,0 +1,53 @@
+//mkdir express-app
+//cd express-app
+//npm init -y
+//npm install express
+//Create a file named app.js
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+// Middleware to serve static files
+app.use(express.static('public'));
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Home route
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to the Express App!</h1>');
+});
+
+// About route
+app.get('/about', (req, res) => {
+    res.send('<h1>About Page</h1>');
+});
+
+// Sample POST route
+app.post('/data', (req, res) => {
+    const data = req.body;
+    res.json({ message: 'Data received', data });
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+//Create a directory for static files
+mkdir public
+//Create a file public/home.html with the following content:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Express App</title>
+</head>
+<body>
+    <h1>Hello from the Static File!</h1>
+</body>
+</html>
+//node app.js
+//{ "name": "John Doe", "age": 30 }

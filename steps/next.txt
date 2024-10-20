@@ -1,0 +1,95 @@
+//npx create-next-app todo-app
+//cd todo-app
+'use client';
+import React, { useState } from 'react';
+
+const App = () => {
+    const [userInput, setUserInput] = useState('');
+    const [list, setList] = useState([]);
+
+    // Set a user input value
+    const updateInput = (value) => {
+        setUserInput(value);
+    };
+
+    // Add item
+    const handleAction = () => {
+        if (userInput.trim() === '') return; // Avoid adding empty items
+
+        const newItem = {
+            id: Math.random(), // Consider using a more reliable ID generator
+            value: userInput,
+        };
+        setList([...list, newItem]);
+
+        setUserInput(''); // Clear input field
+    };
+
+    // Function to delete item from list using id to delete
+    const deleteItem = (id) => {
+        const updatedList = list.filter((item) => item.id !== id);
+        setList(updatedList);
+    };
+
+    return (
+        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+            <h2 style={{ textAlign: 'center', color: '#333' }}>TODO LIST</h2>
+            <div style={{ display: 'flex', marginBottom: '20px' }}>
+                <input
+                    style={{
+                        flexGrow: 1,
+                        padding: '10px',
+                        fontSize: '1rem',
+                        borderRadius: '4px',
+                        border: '1px solid #ccc',
+                        marginRight: '10px',
+                    }}
+                    placeholder="Add item..."
+                    value={userInput}
+                    onChange={(e) => updateInput(e.target.value)}
+                />
+                <button
+                    style={{
+                        padding: '10px 15px',
+                        backgroundColor: '#4caf50',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                    }}
+                    onClick={handleAction}
+                >
+                    ADD
+                </button>
+            </div>
+            <div style={{ background: '#f9f9f9', padding: '20px', borderRadius: '4px' }}>
+                {list.length > 0 ? (
+                    list.map((item) => (
+                        <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                            <span style={{ fontSize: '1rem', flexGrow: 1 }}>{item.value}</span>
+                            <button
+                                style={{
+                                    padding: '5px 10px',
+                                    backgroundColor: '#f44336',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => deleteItem(item.id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    ))
+                ) : (
+                    <div style={{ textAlign: 'center', color: '#777' }}>No items in the list</div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default App;
+//npm run dev

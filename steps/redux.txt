@@ -1,0 +1,106 @@
+//npx create-react-app redux-todo-app
+//cd redux-todo-app
+//npm install redux react-redux
+//Create a new folder called redux in the src directory. Inside the redux folder, create a file named store.js:
+// src/redux/store.js
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+
+const store = createStore(rootReducer);
+
+export default store;
+//In the redux folder, create another folder named reducers. Inside reducers, create a file named index.js:
+// src/redux/reducers/index.js
+const initialState = {
+  items: [],
+};
+
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return { ...state, items: [...state.items, action.payload] };
+    case 'REMOVE_ITEM':
+      return {
+        ...state,
+        items: state.items.filter((item, index) => index !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
+export default rootReducer;
+//Now, update the src/index.js to provide the Redux store to your app:
+// src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import App from './App';
+import store from './redux/store';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+//Create a new file named Todo.js in the src directory:
+// src/Todo.js
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+const Todo = () => {
+  const [inputValue, setInputValue] = useState('');
+  const items = useSelector((state) => state.items);
+  const dispatch = useDispatch();
+
+  const addItem = () => {
+    if (inputValue.trim()) {
+      dispatch({ type: 'ADD_ITEM', payload: inputValue });
+      setInputValue('');
+    }
+  };
+
+  const removeItem = (index) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: index });
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>Todo List</h1>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Add a new todo"
+      />
+      <button onClick={addItem}>Add</button>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>
+            {item}
+            <button onClick={() => removeItem(index)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Todo;
+//Finally, update your App.js to include the Todo component:
+// src/App.js
+import React from 'react';
+import Todo from './Todo';
+
+const App = () => {
+  return (
+    <div>
+      <Todo />
+    </div>
+  );
+};
+
+export default App;
+
+

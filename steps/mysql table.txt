@@ -1,0 +1,10 @@
+CREATE TABLE Employee (
+    id INT PRIMARY KEY AUTO_INCREMENT,  -- Unique identifier for each employee, auto-incremented
+    first_name VARCHAR(50),              -- Employee's first name
+    last_name VARCHAR(50),               -- Employee's last name
+    email VARCHAR(100),                  -- Employee's email address
+    position VARCHAR(100),               -- Employee's job title or position
+    salary DECIMAL(10, 2),               -- Employee's salary
+    department VARCHAR(100),             -- Department the employee belongs to
+    hire_date DATE                       -- Date when the employee was hired
+);
